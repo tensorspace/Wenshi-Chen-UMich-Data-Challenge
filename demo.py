@@ -31,7 +31,7 @@ def feature_extract(path):
 
 def main():
     path = 'C:\\Users\\ChenWenshi\\Downloads\\umich_ds_cc_2017-master\\test_data\\*.wav'
-    demo_data = feature_extract(path)
+    demo_data = feature_extract(path) # extract features from all wav files in the test dataset
     print('processed data.')
     result = []
     model_params = {
@@ -40,8 +40,8 @@ def main():
         'knn_metric': 'minkowski'
     }
     #  train_and_test(data, [model_params, 'svc'])
-    model = classify.load_model(model_params)
-    pre = classify.predict(model, demo_data, [model_params, 'svc'])
+    model = classify.load_model(model_params) # load trained data
+    pre = classify.predict(model, demo_data, [model_params, 'svc']) # predict with SVC method
     audio_filenames = glob.glob(path)
     for i in range(len(audio_filenames)):
         file = audio_filenames[i][64:]
