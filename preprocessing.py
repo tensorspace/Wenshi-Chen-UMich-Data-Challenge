@@ -20,7 +20,7 @@ def detect_leading_silence(sound, silence_threshold=.001, chunk_size=10):
 
 def feature_extract(path):
 
-    #sr = 44100
+    # extract feature from the wav
     window_size = 2048
     hop_size = window_size/2
     data = []
@@ -31,7 +31,7 @@ def feature_extract(path):
     for filename in files:
         print(filename)
         music, sr= librosa.load(filename)
-
+        #remove the silence time from the beginning and ending of the file
         start_trim = detect_leading_silence(music)
         end_trim = detect_leading_silence(np.flipud(music))
 
@@ -39,9 +39,10 @@ def feature_extract(path):
         trimmed_sound = music[start_trim:duration-end_trim]
         # the sound without silence
 
-        #use mfcc to calculate the audio features
+        #use the Mel-frequency cepstral coefficients as features for classification
         mfccs = librosa.feature.mfcc(y=trimmed_sound, sr=sr)
         aver = np.mean(mfccs, axis = 1)
+        # the feature variable is the mean vector of mfccs over time and reshaped to 20
         feature = aver.reshape(20)
 
         #store label and feature
@@ -56,6 +57,7 @@ def feature_extract(path):
 
 
 def main():
+    #extract features from training data set and dump them to disk for later usage
     data = feature_extract('C:\\Users\\ChenWenshi\\Documents\\GitHub\\umich_ds_cc_2017\\train_data\\*.wav')
     with open("data.dat", "wb") as f:
         pickle.dump(data, f)
