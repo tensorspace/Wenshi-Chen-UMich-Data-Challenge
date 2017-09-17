@@ -23,7 +23,7 @@ def unpack_data(data):
     return src_names, features, labels
 
 def train_and_test(data, method, cv_fold=10):
-    # extract features of every images
+    # perform n-fold cross-validation with specified methodi and calculate the optimal accuracy
     fold_unit = int(len(data) / cv_fold)
     #np.random.shuffle(data)
     accu_rates = []
